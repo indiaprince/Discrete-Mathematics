@@ -1,60 +1,86 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 #pragma warning (disable:4996)
 
 
-int main() {
-	FILE *fp = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\formula.txt","wt");
-	fprintf(fp, "p cnf 729 10\n");
+int main(int argc, char *argv[]) {
+	FILE *fp = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\formula.txt", "wt");
+	FILE *op = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\input2.txt", "rt");
+	int count = 0;
+	fprintf(fp, "p cnf 729\n");
+	FILE *out = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\output.txt", "rt");
+	int input[9][9] = { 0 };
+	int *pointer = input;
+	int ast_input[9][9] = { 0 };
+	while (!feof(op))
+	{
+		//공백으로 분리된 파일 읽기
+		fscanf(op, "%d", pointer);
+		if (*pointer == 42) {
+			*pointer = -1;
+		}
+		pointer++;
+	}
+
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			if (input[i - 1][j - 1] > 0) {
+				fprintf(fp, "%d 0\n", (j - 1) * 9 + (i - 1) * 81 + input[i - 1][j - 1]);
+			}
+		}
+	}
 	for (int i = 1; i <= 9; i++) {
 		for (int n = 1; n <= 9; n++) {
 			for (int j = 1; j <= 9; j++) {
 				int k = (j - 1) * 9 + (i - 1) * 81 + n;
 				fprintf(fp, "%d ", k);
 			}
-			fprintf(fp,"0  \n");
+			fprintf(fp, "0  \n");
 		}
 	}
 	for (int j = 1; j <= 9; j++) {
 		for (int n = 1; n <= 9; n++) {
 			for (int i = 1; i <= 9; i++) {
 				int k = (j - 1) * 9 + (i - 1) * 81 + n;
-				fprintf(fp,"%d ", k);
+				fprintf(fp, "%d ", k);
 			}
-			fprintf(fp,"0  \n");
-		}
-	}
-		for (int r = 0; r <= 2; r++){
-			for (int s = 0; s <= 2; s++) {
-				for (int n = 1; n <= 9; n++) {
-					for (int i = 1; i <= 3; i++) {
-						for (int j = 1; j <= 3; j++) {
-							int k = ((j + (3 * s)) - 1) * 9 + (i + (3 * r) - 1) * 81 + n;
-							fprintf(fp,"%d ", k);
-						}
-					}
-					fprintf(fp,"0  \n");
-				}
-			}
-		}
-	for (int i = 1; i <= 9; i++) {
-		for (int j = 1; j <= 9; j++) {
-			for (int n = 1; n <= 8; n++) {
-				for (int m = n + 1; m <= 9; m++) {
-					fprintf(fp,"%d -%d 0\n", ((j - 1) * 9 + (i - 1) * 81 + n), ((j - 1) * 9 + (i - 1) * 81 + m));
-				}
-			}
-		}
-	}
-	for (int i = 1; i <= 9; i++) {
-		for (int j = 1; j <= 9; j++) {
-			for (int n = 1; n <= 8; n++) {
-				for (int m = n + 1; m <= 9; m++) {
-					fprintf(fp, "%d -%d 0\n", ((j - 1) * 9 + (i - 1) * 81 + m), ((j - 1) * 9 + (i - 1) * 81 + n));
-				}
-			}
+			fprintf(fp, "0  \n");
 		}
 
 	}
+	for (int r = 0; r <= 2; r++) {
+		for (int s = 0; s <= 2; s++) {
+			for (int n = 1; n <= 9; n++) {
+				for (int i = 1; i <= 3; i++) {
+					for (int j = 1; j <= 3; j++) {
+						int k = ((j + (3 * s)) - 1) * 9 + (i + (3 * r) - 1) * 81 + n;
+						fprintf(fp, "%d ", k);
+					}
+				}
+				fprintf(fp, "0  \n");
+			}
+		}
+	}
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			for (int n = 1; n <= 8; n++) {
+				for (int m = n + 1; m <= 9; m++) {
+					fprintf(fp, "-%d -%d 0\n", ((j - 1) * 9 + (i - 1) * 81 + n), ((j - 1) * 9 + (i - 1) * 81 + m));
+				}
+			}
+		}
+	}
+	//    for (int i = 1; i <= 9; i++) {
+	//        for (int j = 1; j <= 9; j++) {
+	//            for (int n = 1; n <= 8; n++) {
+	//                for (int m = n + 1; m <= 9; m++) {
+	//                    fprintf(fp, "%d %d 0\n", ((j - 1) * 9 + (i - 1) * 81 + m), ((j - 1) * 9 + (i - 1) * 81 + n));
+	//                }
+	//            }
+	//        }
+	//    }
+
 	fclose(fp);
+	fclose(op);
+	system("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\z3 -dimacs C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\formula.txt >C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\output.txt");
 }
