@@ -5,20 +5,20 @@
 
 int main(int argc, char *argv[]) {
 	FILE *fp = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\formula.txt", "wt");
-	FILE *op = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\input2.txt", "rt");
-	int count = 0;
+	FILE *op = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\input4.txt", "rt");
 	fprintf(fp, "p cnf 729\n");
-	FILE *out = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\output.txt", "rt");
-	int input[9][9] = { 0 };
-	int *pointer = input;
-	int ast_input[9][9] = { 0 };
-	while (!feof(op))
+
+	int input[9][9] = { 0 };   // input을 받아오기 위한 2차원 array
+	int *pointer = input;     // array 증가시키려는 포인터
+
+	while (!feof(op))  // 파일 다 읽을때까지 반복
 	{
 		//공백으로 분리된 파일 읽기
-		fscanf(op, "%d", pointer);
-		if (*pointer == 42) {
+		fscanf(op, "%d ", pointer);
+		/*if (*pointer == 42) {
 			*pointer = -1;
 		}
+		*/ //아스탈리스크 현재 제외 중 *
 		pointer++;
 	}
 
@@ -79,8 +79,41 @@ int main(int argc, char *argv[]) {
 	//            }
 	//        }
 	//    }
-
-	fclose(fp);
-	fclose(op);
-	system("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\z3 -dimacs C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\formula.txt >C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\output.txt");
+	////   이것은 왜 필요없는 지 아직 모르겠다.
+	fclose(fp); // 파일 닫기
+	fclose(op);// 파일 닫기
+	system("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\z3 -dimacs C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\formula.txt >C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\out.txt");
+	// 자동적으로 system 함수를 이용하여 z3가 c언어 컴파일링 중에 실행되게 하여 out.txt 파일에 sat 값 저장.
+	FILE *out = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\out.txt", "rt"); // txt 파일 열기
+	int output[9][9] = { 0 };  // 아웃풋을 저장하기 위한 어레이
+	char sat[5];  // 처음 1줄에 sat 이라는 것을 제외 시키기 위한 char array
+	int t=0;  
+	int *temp=output;  // 아웃풋 어레이를 포인터로 증가시켜 접근하기 위해.
+	fgets(sat, 4, out);  // sat 제외
+	while (!feof(out))  // 끝날 때까지 읽기
+	{
+		fscanf(out, "%d ", &t);
+		if (t > 0) {
+			*temp=t;
+			temp++;    // 0보다 큰 걸 다 output array에 옮기기
+		}
+			
+	}
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			output[i][j] = output[i][j] % 9;
+			if (output[i][j] == 0) {
+				output[i][j] = 9;
+			}
+			printf("%d ", output[i][j]); //(j - 1) * 9 + (i - 1) * 81 + n)의 값에서 9로 나누니 자연스럽게 9까지 나오는 스도쿠의 9는 0이 된다. 그래서 9는 따로 저장.
+			}
+		printf("\n");
+		}
+	FILE *put= fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\output.txt", "wt"); // output.txt 파일에 저장하기 위함.
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+				fprintf(put, "%d ", output[i][j]);
+		}
+		fprintf(put, "\n");
+	}
 }
