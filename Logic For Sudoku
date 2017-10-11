@@ -8,20 +8,51 @@ int main(int argc, char *argv[]) {
 	FILE *op = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\input4.txt", "rt");
 	fprintf(fp, "p cnf 729\n");
 
+
+
 	int input[9][9] = { 0 };   // input을 받아오기 위한 2차원 array
 	int *pointer = input;     // array 증가시키려는 포인터
-
+	int count[4] = {0};
+	int idx = 0;
 	while (!feof(op))  // 파일 다 읽을때까지 반복
 	{
 		//공백으로 분리된 파일 읽기
 		fscanf(op, "%d ", pointer);
-		/*if (*pointer == 42) {
-			*pointer = -1;
-		}
-		*/ //아스탈리스크 현재 제외 중 *
+		 //아스탈리스크 현재 제외 중 *
 		pointer++;
 	}
+	/*
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			//if (input[i][j] == 42) {
+				//	count[idx]=(j - 1) * 9 + (i - 1) * 81;
+					//idx++;
+					//}
+			printf("%", input[i][j]);
+				}
+		printf("\n");
+			}
+	if (idx == 1) {
+		for (int n = 1; n <= 9; n++) {
+			fprintf(fp, "%d -%d 0\n", count[0] + n, count[1] + n);
+			fprintf(fp, "-%d %d 0\n", count[0] + n, count[1] + n);
+		}
+	}
+	/*
+	else if (idx == 2) {
+		for (int n = 1; n <= 9; n++) {
 
+		}
+
+	}
+	else if (idx == 3) {
+		for (int n = 1; n <= 9; n++) {
+
+		}
+
+	}
+	
+	*/
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
 			if (input[i - 1][j - 1] > 0) {
@@ -70,15 +101,15 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	//    for (int i = 1; i <= 9; i++) {
-	//        for (int j = 1; j <= 9; j++) {
-	//            for (int n = 1; n <= 8; n++) {
-	//                for (int m = n + 1; m <= 9; m++) {
-	//                    fprintf(fp, "%d %d 0\n", ((j - 1) * 9 + (i - 1) * 81 + m), ((j - 1) * 9 + (i - 1) * 81 + n));
-	//                }
-	//            }
-	//        }
-	//    }
+	  /* for (int i = 1; i <= 9; i++) {
+	        for (int j = 1; j <= 9; j++) {
+	            for (int n = 1; n <= 8; n++) {
+	                for (int m = n + 1; m <= 9; m++) {
+                    fprintf(fp, "%d %d 0\n", ((j - 1) * 9 + (i - 1) * 81 + m), ((j - 1) * 9 + (i - 1) * 81 + n));
+	                }
+	            }
+	        }
+	    }*/
 	////   이것은 왜 필요없는 지 아직 모르겠다.
 	fclose(fp); // 파일 닫기
 	fclose(op);// 파일 닫기
@@ -89,7 +120,12 @@ int main(int argc, char *argv[]) {
 	char sat[5];  // 처음 1줄에 sat 이라는 것을 제외 시키기 위한 char array
 	int t=0;  
 	int *temp=output;  // 아웃풋 어레이를 포인터로 증가시켜 접근하기 위해.
-	fgets(sat, 4, out);  // sat 제외
+	fgets(sat, 6, out);// sat 제외
+	if (strcmp(sat, "unsat")==0) {
+		printf("There is No solution\n");
+		exit(0);
+	}
+
 	while (!feof(out))  // 끝날 때까지 읽기
 	{
 		fscanf(out, "%d ", &t);
@@ -117,3 +153,11 @@ int main(int argc, char *argv[]) {
 		fprintf(put, "\n");
 	}
 }
+
+
+
+
+//1. clause 개수  // 
+//2. asterisk 고려
+//3. 마지막 로직 for문 필요성
+//
