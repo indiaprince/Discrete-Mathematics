@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
 	FILE *fp = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\formula.txt", "wt");
-	FILE *op = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\input4.txt", "rt");
+	FILE *op = fopen("C:\\Users\\Indiaprince\\Desktop\\Dis\\z3\\z3\\bin\\input2.txt", "rt");
 	fprintf(fp, "p cnf 729\n");
 
 
@@ -17,35 +17,45 @@ int main(int argc, char *argv[]) {
 	while (!feof(op))  // 파일 다 읽을때까지 반복
 	{
 		//공백으로 분리된 파일 읽기
-		fscanf(op, "%d ", pointer);
+		fscanf(op, "%c ", pointer);
 		 //아스탈리스크 현재 제외 중 *
 		pointer++;
 	}
-	/*
+
+	for (int i = 0; i <= 8; i++) {
+		for (int j = 0; j <= 8; j++) {
+			printf("%d ", input[i][j]);
+		}
+		printf("\n");
+	}
+	
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
-			//if (input[i][j] == 42) {
-				//	count[idx]=(j - 1) * 9 + (i - 1) * 81;
-					//idx++;
-					//}
-			printf("%", input[i][j]);
+			if (input[i-1][j-1] == 42) {
+				count[idx]=(j - 1) * 9 + (i - 1) * 81;
+				idx++;
+				}
+			else {
+				input[i-1][j-1] -= 48;
+			}
+			printf("%d ", input[i-1][j-1]);
 				}
 		printf("\n");
 			}
-	if (idx == 1) {
+	if (idx == 2) {
 		for (int n = 1; n <= 9; n++) {
 			fprintf(fp, "%d -%d 0\n", count[0] + n, count[1] + n);
 			fprintf(fp, "-%d %d 0\n", count[0] + n, count[1] + n);
 		}
 	}
 	/*
-	else if (idx == 2) {
+	else if (idx == 3) {
 		for (int n = 1; n <= 9; n++) {
 
 		}
 
 	}
-	else if (idx == 3) {
+	else if (idx == 4) {
 		for (int n = 1; n <= 9; n++) {
 
 		}
